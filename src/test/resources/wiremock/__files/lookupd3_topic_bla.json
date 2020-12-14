@@ -1,0 +1,21 @@
+{
+    "channels": ["sample_channel#ephemeral"],
+    "producers": [
+        {
+            "remote_address": "5.6.7.8:34446",
+            "hostname": "nsq04",
+            "broadcast_address": "nsq04.example.org",
+            "tcp_port": 4150,
+            "http_port": 4151,
+            "version": "1.2.0"
+        },
+        {
+            "remote_address": "5.6.7.10:40062",
+            "hostname": "nsq03",
+            "broadcast_address": "nsq03.example.org",
+            "tcp_port": 4150,
+            "http_port": 4151,
+            "version": "1.2.0"
+        }
+    ]
+}

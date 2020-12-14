@@ -1,0 +1,20 @@
+{
+    "producers": [
+        {
+            "remote_address": "192.168.0.1:33374",
+            "hostname": "nsqd01",
+            "broadcast_address": "localhost",
+            "tcp_port": 4153,
+            "http_port": 8787,
+            "version": "1.2.0"
+        },
+        {
+            "remote_address": "192.168.0.2:33374",
+            "hostname": "nsqd02",
+            "broadcast_address": "hosted.host",
+            "tcp_port": 4150,
+            "http_port": 8787,
+            "version": "1.2.0"
+        }
+    ]
+}

@@ -2,7 +2,7 @@ image: gradle:jdk8
 
 stages:
   - build-test
-  - package-upload
+  - pages
 
 cache:
   paths:
@@ -35,25 +35,11 @@ test-and-build-knsq:
       -C /usr/local/bin docker/docker
     - gradle test
 
-publish-knsq:
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master" || $CI_COMMIT_BRANCH == "release"'
-      when: on_success
-  stage: package-upload
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - build/libs/*.jar
-  dependencies:
-    - test-and-build-knsq
-  script:
-    - gradle publish
-
 pages:
   rules:
     - if: '$CI_COMMIT_BRANCH == "release"'
       when: on_success
-  stage: package-upload
+  stage: pages
   dependencies:
     - test-and-build-knsq
   script:

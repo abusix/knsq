@@ -13,6 +13,7 @@ plugins {
     id("org.gradle.test-retry") version "1.2.0"
     id("com.github.ben-manes.versions") version "0.36.0"
     `maven-publish`
+    signing
 }
 
 group = "com.abusix"
@@ -33,7 +34,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 
-    implementation("com.google.guava:guava:30.0-jre")
+    implementation("com.google.guava:guava:30.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
     implementation("org.xerial.snappy:snappy-java:1.1.8.2")
 
@@ -43,7 +44,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.10.3-jdk8")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    testImplementation("org.testcontainers:testcontainers:1.15.0")
+    testImplementation("org.testcontainers:testcontainers:1.15.1")
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
     testImplementation("ch.qos.logback:logback-core:1.3.0-alpha5")
     testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
@@ -100,25 +101,61 @@ tasks.register<Jar>("sourcesJar") {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("mavenJava") {
             groupId = "com.abusix"
             artifactId = "knsq"
             from(components["java"])
 
             artifact(tasks["sourcesJar"])
             artifact(tasks["dokkaJavadocJar"])
+
+            pom {
+                name.set("com.abusix:knsq")
+                description.set("A NSQ client library written in Kotlin, based on nsq-j")
+                url.set("https://github.com/abusix/knsq")
+
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("http://www.opensource.org/licenses/mit-license.php")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("bgeisberger")
+                        name.set("Bernhard Geisberger")
+                        email.set("bernhard.geisberger@abusix.com")
+                        organization.set("Abusix")
+                        organizationUrl.set("https://www.abusix.com/")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/abusix/knsq.git")
+                    developerConnection.set("scm:git:ssh://github.com:abusix/knsq.git")
+                    url.set("https://github.com/abusix/knsq/tree/master")
+                }
+            }
         }
     }
     repositories {
         maven {
-            url = uri("https://gitlab.com/api/v4/projects/23097544/packages/maven")
-            credentials(HttpHeaderCredentials::class) {
-                name = "Job-Token"
-                value = System.getenv("CI_JOB_TOKEN")
-            }
-            authentication {
-                create<HttpHeaderAuthentication>("header")
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
+                credentials {
+                    username = project.properties["ossrhUsername"].toString()
+                    password = project.properties["ossrhPassword"].toString()
+                }
             }
         }
+        mavenCentral()
+    }
+}
+
+signing {
+    if (project.hasProperty("signing.keyId")
+        && project.hasProperty("signing.password")
+        && project.hasProperty("signing.secretKeyRingFile")
+    ) {
+        sign(publishing.publications["mavenJava"])
     }
 }

@@ -101,7 +101,7 @@ tasks.register<Jar>("sourcesJar") {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("maven") {
             groupId = "com.abusix"
             artifactId = "knsq"
             from(components["java"])
@@ -147,7 +147,6 @@ publishing {
                 }
             }
         }
-        mavenCentral()
     }
 }
 
@@ -156,6 +155,6 @@ signing {
         && project.hasProperty("signing.password")
         && project.hasProperty("signing.secretKeyRingFile")
     ) {
-        sign(publishing.publications["mavenJava"])
+        sign(publishing.publications["maven"])
     }
 }

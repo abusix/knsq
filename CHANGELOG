@@ -1,4 +1,7 @@
 # Changelog
 
+## [1.0.1] - 04.01.2021
+- Fix rare race condition that can cause a RejectedExecutionException
+
 ## [1.0.0] - 15.12.2020
 - Initial public release

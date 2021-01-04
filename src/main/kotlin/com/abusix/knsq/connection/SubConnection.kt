@@ -39,8 +39,9 @@ internal class SubConnection(clientConfig: ClientConfig, host: HostAndPort, priv
     var onMessage: ((Message) -> Unit)? = null
     var onFailedMessage: ((Message) -> Unit)? = null
 
+    @Synchronized
     override fun onIncomingMessage(message: Message) {
-        synchronized(this@SubConnection) { inFlight++ }
+        inFlight++
         if (message.attempts > subscription.maxMessageAttempts) {
             subscription.handlerExecutor.execute {
                 try {

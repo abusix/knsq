@@ -41,7 +41,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.10.3-jdk8")
+    testImplementation("io.mockk:mockk:1.10.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testImplementation("org.testcontainers:testcontainers:1.15.1")
@@ -101,7 +101,7 @@ tasks.register<Jar>("sourcesJar") {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("maven") {
             groupId = "com.abusix"
             artifactId = "knsq"
             from(components["java"])
@@ -147,7 +147,6 @@ publishing {
                 }
             }
         }
-        mavenCentral()
     }
 }
 
@@ -156,6 +155,6 @@ signing {
         && project.hasProperty("signing.password")
         && project.hasProperty("signing.secretKeyRingFile")
     ) {
-        sign(publishing.publications["mavenJava"])
+        sign(publishing.publications["maven"])
     }
 }

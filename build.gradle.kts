@@ -41,7 +41,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.10.3-jdk8")
+    testImplementation("io.mockk:mockk:1.10.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testImplementation("org.testcontainers:testcontainers:1.15.1")

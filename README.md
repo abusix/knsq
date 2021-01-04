@@ -1,5 +1,11 @@
 # knsq
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.abusix/knsq)](https://repo1.maven.org/maven2/com/abusix/knsq/)
+[![GitHub issues](https://img.shields.io/github/issues/abusix/knsq)](https://github.com/abusix/knsq/issues)
+![JDK Version](https://img.shields.io/badge/jdk-8-blue)
+![Kotlin Version](https://img.shields.io/badge/kotlin-1.4-blue)
+![GitHub](https://img.shields.io/github/license/abusix/knsq)
+
 A NSQ client library written in Kotlin, some parts based on [nsqj](https://github.com/sproutsocial/nsq-j).
 
 ## Features

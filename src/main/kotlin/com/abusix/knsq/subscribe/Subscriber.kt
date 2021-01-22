@@ -278,7 +278,7 @@ open class Subscriber private constructor(
             if (executorsCreated) {
                 isClean = shutdownAndAwaitTermination(scheduledExecutor, maxTime)
                 val remainder = Duration.between(start, Instant.now()).coerceIn(Duration.ofMillis(100), maxTime)
-                if (!shutdownAndAwaitTermination(scheduledExecutor, remainder)) {
+                if (!shutdownAndAwaitTermination(handlerExecutor, remainder)) {
                     isClean = false
                 }
             }

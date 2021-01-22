@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.0.2] - 22.01.2021
+- Fix handler executor not being shut down after stopping if it was created by a Subscriber
+
 ## [1.0.1] - 04.01.2021
 - Fix rare race condition that can cause a RejectedExecutionException
 

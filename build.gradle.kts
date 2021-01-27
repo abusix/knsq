@@ -36,12 +36,12 @@ dependencies {
 
     implementation("com.google.guava:guava:30.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
-    implementation("org.xerial.snappy:snappy-java:1.1.8.2")
+    implementation("org.xerial.snappy:snappy-java:1.1.8.4")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.10.4")
+    testImplementation("io.mockk:mockk:1.10.5")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testImplementation("org.testcontainers:testcontainers:1.15.1")

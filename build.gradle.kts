@@ -5,8 +5,8 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.21"
+    kotlin("jvm") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
     id("org.jetbrains.dokka") version "1.4.20"
     jacoco
     java
@@ -42,8 +42,8 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
     testImplementation("io.mockk:mockk:1.10.5")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
     testImplementation("org.testcontainers:testcontainers:1.15.1")
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
     testImplementation("ch.qos.logback:logback-core:1.3.0-alpha5")

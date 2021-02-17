@@ -21,10 +21,10 @@ workflow:
 test-and-build-knsq:
   stage: build-test
   services:
-    - docker:19.03-dind
+    - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375/
-    DOCKER_VERSION: "19.03.13"
+    DOCKER_VERSION: "20.10.3"
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
   tags:

@@ -5,8 +5,8 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.4.30"
-    kotlin("plugin.serialization") version "1.4.30"
+    kotlin("jvm") version "1.4.31"
+    kotlin("plugin.serialization") version "1.4.31"
     id("org.jetbrains.dokka") version "1.4.20"
     jacoco
     java
@@ -27,12 +27,12 @@ sourceSets.test {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
 
     implementation("com.google.guava:guava:30.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")

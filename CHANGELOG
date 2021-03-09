@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0] - 09.03.2021
+- Automated finish response f messages to NSQ after onMessage concludes can now be turned off using a config parameter at the subscribe method
+- Upgrade Kotlin to 1.4.30
+- Several dependency updates
+
 ## [1.0.2] - 22.01.2021
 - Fix handler executor not being shut down after stopping if it was created by a Subscriber
 

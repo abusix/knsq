@@ -28,6 +28,7 @@ sourceSets.test {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {

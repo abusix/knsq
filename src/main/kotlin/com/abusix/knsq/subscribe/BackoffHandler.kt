@@ -18,7 +18,12 @@ import java.util.concurrent.TimeUnit
 class BackoffHandler internal constructor(
     private val subscription: Subscription,
     private val onMessage: (Message) -> Unit,
-    private val onException: ((Exception) -> Unit)? = null
+    private val onException: ((Exception) -> Unit)? = null,
+    /**
+     * Whether or not messages processed in this [BackoffHandler] should be automatically finished after receiving
+     * them without an exception.
+     */
+    var autoFinish: Boolean = true
 ) {
     companion object {
         /**
@@ -62,7 +67,9 @@ class BackoffHandler internal constructor(
                 if (backoff) {
                     successDuringBackoff()
                 }
-                msg.finish()
+                if (autoFinish) {
+                    msg.finish()
+                }
             }
         } catch (e: Exception) {
             synchronized(this) {

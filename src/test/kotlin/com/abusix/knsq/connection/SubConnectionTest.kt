@@ -27,7 +27,7 @@ class SubConnectionTest {
         snappy = false, authRequired = true, maxDeflateLevel = 0, heartbeatInterval = 10, deflateLevel = 0
     )
     private val subscriber = Subscriber(clientConfig = clientConfig, maxFlushDelay = Duration.ofMillis(500))
-    private val subscription = spyk(Subscription(clientConfig, "topic", "channel", subscriber))
+    private val subscription = spyk(Subscription(clientConfig, "topic", "channel", subscriber, true))
     private val con = spyk(
         SubConnection(
             clientConfig, HostAndPort.fromHost("localhost"),

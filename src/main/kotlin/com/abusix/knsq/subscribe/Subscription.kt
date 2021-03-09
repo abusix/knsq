@@ -22,7 +22,7 @@ import kotlin.math.min
 @Suppress("UnstableApiUsage")
 class Subscription internal constructor(
     private val clientConfig: ClientConfig, val topic: String, val channel: String,
-    private val subscriber: Subscriber
+    private val subscriber: Subscriber, autoFinish: Boolean
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(Subscription::class.java)
@@ -112,9 +112,12 @@ class Subscription internal constructor(
     /**
      * The [BackoffHandler] of this subscription. Use this to configure the options for error backoff.
      */
-    val backoffHandler = BackoffHandler(this,
+    val backoffHandler = BackoffHandler(
+        this,
         { msg -> this@Subscription.onMessage?.invoke(msg) },
-        { e -> this@Subscription.onException?.invoke(e) })
+        { e -> this@Subscription.onException?.invoke(e) },
+        autoFinish
+    )
 
     @Synchronized
     internal fun updateConnections(activeHosts: Set<HostAndPort>) {

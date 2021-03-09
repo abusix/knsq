@@ -199,6 +199,8 @@ open class Subscriber private constructor(
      *                   its [Subscription]s.
      *                   It is guaranteed that for each error, at least [onException] or [onNSQError] will be called.
      *                   Duplicate calls for both handlers should be rare but might be possible due to race conditions.
+     * @param autoFinish Whether or not messages should be automatically marked as finished after [onMessage]
+     *                   successfully concluded.
      */
     @JvmOverloads
     @Synchronized
@@ -206,7 +208,8 @@ open class Subscriber private constructor(
         topic: String, channel: String, onMessage: (Message) -> Unit,
         onFailedMessage: ((Message) -> Unit)? = null,
         onException: ((Exception) -> Unit)? = null,
-        onNSQError: ((Error) -> Unit)? = null
+        onNSQError: ((Error) -> Unit)? = null,
+        autoFinish: Boolean = true
     ): Subscription {
         require(topic.isValidNSQTopicOrChannel()) { "Invalid topic" }
         require(channel.isValidNSQTopicOrChannel()) { "Invalid channel" }
@@ -221,7 +224,7 @@ open class Subscriber private constructor(
                 }
             }
         }
-        val sub = Subscription(clientConfig, topic, channel, this)
+        val sub = Subscription(clientConfig, topic, channel, this, autoFinish)
         subscriptions.add(sub)
         running = true
         sub.onMessage = onMessage

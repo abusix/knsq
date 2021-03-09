@@ -36,24 +36,24 @@ class SubscriptionTest {
         every { subscriber.initialMaxInFlight } returns 200
         every { subscriber.lookupInterval } returns Duration.ofSeconds(5)
 
-        var sub = Subscription(config, "topic", "channel", subscriber)
+        var sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(1, 1, sub, 200)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(2, 2, sub, 100, 100)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(2, 1, sub, 199)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(3, 3, sub, 66, 67, 67)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(5, 3, sub, 66, 66, 66)
         every { subscriber.initialMaxInFlight } returns 2500
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(4, 4, sub, 625, 625, 625, 625)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(6, 6, sub, 417, 417, 417, 417, 416, 416)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(7, 4, sub, 624, 624, 624, 625)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testInFlight(10, 6, sub, 416, 416, 416, 416, 416, 416)
     }
 
@@ -115,11 +115,11 @@ class SubscriptionTest {
         val subscriber = mockk<Subscriber>(relaxed = true)
         every { subscriber.initialMaxInFlight } returns 200
         every { subscriber.lookupInterval } returns Duration.ofSeconds(5)
-        var sub = Subscription(config, "topic", "channel", subscriber)
+        var sub = Subscription(config, "topic", "channel", subscriber, true)
         testLowFlight(sub, 2, 3)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testLowFlight(sub, 1, 2)
-        sub = Subscription(config, "topic", "channel", subscriber)
+        sub = Subscription(config, "topic", "channel", subscriber, true)
         testLowFlight(sub, 5, 10)
     }
 
@@ -149,7 +149,7 @@ class SubscriptionTest {
         val subscriberMock = mockk<Subscriber>(relaxed = true)
         val executor = Executors.newSingleThreadScheduledExecutor()
         every { subscriberMock.scheduledExecutor } returns executor
-        val sub = Subscription(mockk(), "", "", subscriberMock)
+        val sub = Subscription(mockk(), "", "", subscriberMock, true)
         val conMap = setupConMap(2, sub)
         val taskMock = mockk<ScheduledFuture<*>>(relaxed = true)
         Subscription::class.memberProperties.first { it.name == "lowFlightRotateTask" }.apply {

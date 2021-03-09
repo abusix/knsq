@@ -24,7 +24,6 @@ class BackoffHandlerTest {
         val delay = Duration.between(lastHandleTime, now)
         handleDelays.add(delay)
         lastHandleTime = now
-        println("delay: ${delay.toMillis()}; Msg#${msg.id}")
         if (handleSucceedQueue.isNotEmpty() && !handleSucceedQueue.removeFirst()) {
             throw RuntimeException("test backoff")
         }
@@ -52,13 +51,11 @@ class BackoffHandlerTest {
 
         val slot2 = slot<String>()
         every { con.requeue(capture(slot2)) } answers {
-            println("REQ ${slot2.captured}")
             val msg = msgs[slot2.captured.toInt()]
             queue.add(Message(0, msg.attempts + 1, msg.id, msg.data, con))
 
         }
         every { con.finish(capture(slot2)) } answers {
-            println("FIN ${slot2.captured}")
             finished.add(slot2.captured)
         }
 
@@ -78,11 +75,33 @@ class BackoffHandlerTest {
         }
         val realDelays = handleDelays.map { it.toMillis() }
         val expectedDelays = listOf(0, 0, 1000, 2000, 4000, 2000, 1000, 0, 0, 0, 0, 0, 0)
-        println("delays: $realDelays")
 
         assertEquals(handleDelays.size, realDelays.size)
         for (i in handleDelays.indices) {
             assert(abs(realDelays[i] - expectedDelays[i]) < 500)
         }
+    }
+
+    @Test
+    fun testNoAutoFinish() {
+        val sub = mockk<Subscription>(relaxed = true)
+        val executor = Executors.newSingleThreadScheduledExecutor()
+        every { sub.scheduledExecutor } returns executor
+        val con = mockk<SubConnection>(relaxed = true)
+
+        every { sub.maxInFlight } returns 1
+        every { sub.running } returns true
+
+        val msgs = (1..10).map { Message(0, 0, it.toString(), "Message $it".toByteArray(), con) }
+
+        val slot2 = slot<String>()
+        every { con.finish(capture(slot2)) } throws Exception("No finish call should happen")
+
+        val returned = mutableListOf<Message>()
+        val handler = BackoffHandler(sub, { returned.add(it) }, autoFinish = false)
+
+        msgs.forEach { handler.handle(it) }
+
+        assertEquals(returned.size, msgs.size)
     }
 }

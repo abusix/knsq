@@ -5,12 +5,12 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.serialization") version "1.4.31"
-    id("org.jetbrains.dokka") version "1.4.20"
+    kotlin("jvm") version "1.4.32"
+    kotlin("plugin.serialization") version "1.4.32"
+    id("org.jetbrains.dokka") version "1.4.30"
     jacoco
     java
-    id("org.gradle.test-retry") version "1.2.0"
+    id("org.gradle.test-retry") version "1.2.1"
     id("com.github.ben-manes.versions") version "0.38.0"
     `maven-publish`
     signing
@@ -35,14 +35,14 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
 
-    implementation("com.google.guava:guava:30.1-jre")
+    implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
     implementation("org.xerial.snappy:snappy-java:1.1.8.4")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.10.6")
+    testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
     testImplementation("org.testcontainers:testcontainers:1.15.2")

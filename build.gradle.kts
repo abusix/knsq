@@ -5,12 +5,11 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.serialization") version "1.4.31"
-    id("org.jetbrains.dokka") version "1.4.20"
-    jacoco
+    kotlin("jvm") version "1.5.0"
+    kotlin("plugin.serialization") version "1.5.0"
+    id("org.jetbrains.dokka") version "1.4.32"
     java
-    id("org.gradle.test-retry") version "1.2.0"
+    id("org.gradle.test-retry") version "1.2.1"
     id("com.github.ben-manes.versions") version "0.38.0"
     `maven-publish`
     signing
@@ -19,61 +18,35 @@ plugins {
 group = "com.abusix"
 version = file("VERSION").readText().trim()
 
-sourceSets.main {
-    resources.srcDir("src/main/resources")
-}
-sourceSets.test {
-    resources.srcDir("src/test/resources")
-}
-
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
 
-    implementation("com.google.guava:guava:30.1-jre")
+    implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
     implementation("org.xerial.snappy:snappy-java:1.1.8.4")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.10.6")
+    testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-    testImplementation("org.testcontainers:testcontainers:1.15.2")
+    testImplementation("org.testcontainers:testcontainers:1.15.3")
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
     testImplementation("ch.qos.logback:logback-core:1.3.0-alpha5")
     testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
-    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.20")
+    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
 }
 
 tasks.processResources {
     filesMatching("knsq.properties") {
         expand(project.properties)
     }
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
-}
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-}
-
-tasks.withType<JacocoReport> {
-    classDirectories.setFrom(
-        sourceSets.main.get().output.asFileTree.matching {
-            exclude(
-                "com/abusix/knsq/config/**/*",
-                "com/abusix/knsq/http/model/**/*"
-            )
-        }
-    )
 }
 
 tasks.withType<Test> {

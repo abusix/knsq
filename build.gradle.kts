@@ -5,9 +5,9 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.4.32"
-    kotlin("plugin.serialization") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.4.30"
+    kotlin("jvm") version "1.5.0"
+    kotlin("plugin.serialization") version "1.5.0"
+    id("org.jetbrains.dokka") version "1.4.32"
     jacoco
     java
     id("org.gradle.test-retry") version "1.2.1"
@@ -19,21 +19,13 @@ plugins {
 group = "com.abusix"
 version = file("VERSION").readText().trim()
 
-sourceSets.main {
-    resources.srcDir("src/main/resources")
-}
-sourceSets.test {
-    resources.srcDir("src/test/resources")
-}
-
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
 
     implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
@@ -45,11 +37,11 @@ dependencies {
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-    testImplementation("org.testcontainers:testcontainers:1.15.2")
+    testImplementation("org.testcontainers:testcontainers:1.15.3")
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
     testImplementation("ch.qos.logback:logback-core:1.3.0-alpha5")
     testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
-    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.20")
+    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
 }
 
 tasks.processResources {

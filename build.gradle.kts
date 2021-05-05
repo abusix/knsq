@@ -8,7 +8,6 @@ plugins {
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.serialization") version "1.5.0"
     id("org.jetbrains.dokka") version "1.4.32"
-    jacoco
     java
     id("org.gradle.test-retry") version "1.2.1"
     id("com.github.ben-manes.versions") version "0.38.0"
@@ -48,24 +47,6 @@ tasks.processResources {
     filesMatching("knsq.properties") {
         expand(project.properties)
     }
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
-}
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-}
-
-tasks.withType<JacocoReport> {
-    classDirectories.setFrom(
-        sourceSets.main.get().output.asFileTree.matching {
-            exclude(
-                "com/abusix/knsq/config/**/*",
-                "com/abusix/knsq/http/model/**/*"
-            )
-        }
-    )
 }
 
 tasks.withType<Test> {

@@ -139,7 +139,7 @@ below.
 
 ## Further Documentation
 
-* Dokka: https://abusix.gitlab.io/ai/evprocessing/knsq/dokka/html/knsq
+* Dokka: https://abusix.gitlab.io/ai/evprocessing/knsq/dokka/html
 * JavaDoc: https://abusix.gitlab.io/ai/evprocessing/knsq/dokka/javadoc
 
 ## License

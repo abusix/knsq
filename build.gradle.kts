@@ -5,12 +5,12 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.5.0"
-    kotlin("plugin.serialization") version "1.5.0"
+    kotlin("jvm") version "1.5.20"
+    kotlin("plugin.serialization") version "1.5.20"
     id("org.jetbrains.dokka") version "1.4.32"
     java
-    id("org.gradle.test-retry") version "1.2.1"
-    id("com.github.ben-manes.versions") version "0.38.0"
+    id("org.gradle.test-retry") version "1.3.1"
+    id("com.github.ben-manes.versions") version "0.39.0"
     `maven-publish`
     signing
 }
@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
     implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
@@ -33,9 +33,9 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.11.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
     testImplementation("org.testcontainers:testcontainers:1.15.3")
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
     testImplementation("ch.qos.logback:logback-core:1.3.0-alpha5")

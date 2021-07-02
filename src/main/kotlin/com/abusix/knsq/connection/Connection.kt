@@ -11,6 +11,7 @@ import com.abusix.knsq.protocol.Frame
 import com.abusix.knsq.protocol.Message
 import com.abusix.knsq.protocol.Response
 import com.google.common.net.HostAndPort
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -89,7 +90,11 @@ internal abstract class Connection(
             throw KNSQException("Unexpected message type: ${response.type}")
         }
 
-        config = json.decodeFromString(response.msg)
+        config = try {
+            json.decodeFromString(response.msg)
+        } catch (e: SerializationException) {
+            throw KNSQException("Received no or bad config from nsqd", e)
+        }
         logger.debug("connected connectionConfig: {}", response)
 
         sock.soTimeout = config.heartbeatInterval.toInt() + 5000

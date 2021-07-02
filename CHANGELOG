@@ -1,7 +1,15 @@
 # Changelog
 
+## [1.2.1] - 02.07.2021
+- Fixed rare unexpected exception in connect method
+- Upgraded dependencies
+
+## [1.2.0] - 05.05.2021
+- Upgraded Kotlin version to 1.5.0
+- Dependency upgrades
+
 ## [1.1.0] - 09.03.2021
-- Automated finish response f messages to NSQ after onMessage concludes can now be turned off using a config parameter at the subscribe method
+- Automated finish response if messages to NSQ after onMessage concludes can now be turned off using a config parameter at the subscribe method
 - Upgrade Kotlin to 1.4.30
 - Several dependency updates
 

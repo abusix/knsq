@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.2] - 20.09.2021
+- Fixed exception caused by race-condition in subscription handling
+- Upgraded dependencies
+
 ## [1.2.1] - 02.07.2021
 - Fixed rare unexpected exception in connect method
 - Upgraded dependencies

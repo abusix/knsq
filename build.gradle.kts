@@ -5,9 +5,9 @@ tasks.withType(KotlinCompile::class) {
 }
 
 plugins {
-    kotlin("jvm") version "1.5.20"
-    kotlin("plugin.serialization") version "1.5.20"
-    id("org.jetbrains.dokka") version "1.4.32"
+    kotlin("jvm") version "1.5.31"
+    kotlin("plugin.serialization") version "1.5.31"
+    id("org.jetbrains.dokka") version "1.5.30"
     java
     id("org.gradle.test-retry") version "1.3.1"
     id("com.github.ben-manes.versions") version "0.39.0"
@@ -24,23 +24,23 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
     implementation("com.google.guava:guava:30.1.1-jre")
-    implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
+    implementation("org.slf4j:slf4j-api:2.0.0-alpha5")
     implementation("org.xerial.snappy:snappy-java:1.1.8.4")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
     testImplementation("io.mockk:mockk:1.12.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
-    testImplementation("org.testcontainers:testcontainers:1.15.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+    testImplementation("org.testcontainers:testcontainers:1.16.0")
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
-    testImplementation("ch.qos.logback:logback-core:1.3.0-alpha5")
-    testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
-    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
+    testImplementation("ch.qos.logback:logback-core:1.3.0-alpha10")
+    testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha10")
+    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.5.30")
 }
 
 tasks.processResources {

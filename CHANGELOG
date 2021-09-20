@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.3] - 20.09.2021
+- Fixed potential race-conditions caused by missing volatile keywords
+
 ## [1.2.2] - 20.09.2021
 - Fixed exception caused by race-condition in subscription handling
 - Upgraded dependencies

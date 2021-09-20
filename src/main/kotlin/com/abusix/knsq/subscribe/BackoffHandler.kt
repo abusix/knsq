@@ -49,10 +49,18 @@ class BackoffHandler internal constructor(
 
     @Volatile
     private var isBackoff = false
+
+    @Volatile
     private var lastAttempt: Instant = Instant.EPOCH
+
+    @Volatile
     private var delay = Duration.ZERO
     private var failCount = 0
+
+    @Volatile
     private var fullSpeedMaxInFlight = 0
+
+    @Volatile
     private var lastResumeTask: ScheduledFuture<*>? = null
 
 

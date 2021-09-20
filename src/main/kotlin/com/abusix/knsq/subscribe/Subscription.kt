@@ -169,6 +169,9 @@ class Subscription internal constructor(
             connectionMap.values.partition { it.lastActionFlush.isBefore(oldestToBeActive) }
         }
         if (activeCons.isEmpty()) {
+            if (inactiveCons.isEmpty()) {
+                return
+            }
             activeCons = inactiveCons
             inactiveCons = emptyList()
         }

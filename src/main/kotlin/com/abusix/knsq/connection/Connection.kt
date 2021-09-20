@@ -51,6 +51,7 @@ internal abstract class Connection(
 
     lateinit var config: ConnectionConfig
 
+    @Volatile
     var isRunning = false
         private set
 

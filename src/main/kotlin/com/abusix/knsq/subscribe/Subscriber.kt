@@ -136,6 +136,7 @@ open class Subscriber private constructor(
         NSQLookupDHTTPClient(it, lookupInterval.dividedBy(2), lookupInterval.dividedBy(2))
     }
     private val subscriptions = mutableListOf<Subscription>()
+    @Volatile
     private var running = false
 
     private val lookupTask = scheduledExecutor.scheduleAtFixedRate(

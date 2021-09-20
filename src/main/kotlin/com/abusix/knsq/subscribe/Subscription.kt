@@ -38,6 +38,7 @@ class Subscription internal constructor(
     /**
      * Whether or not this subscription is still actively running.
      */
+    @Volatile
     var running: Boolean = true
         private set
 

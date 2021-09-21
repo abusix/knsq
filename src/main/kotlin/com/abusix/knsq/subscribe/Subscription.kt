@@ -136,33 +136,46 @@ class Subscription internal constructor(
                     }
                 } catch (e: Exception) {
                     logger.debug("closing inactive connection failed", e)
-                    onException?.invoke(e)
+                    if (running) {
+                        onException?.invoke(e)
+                    }
                 }
             }
         }
         activeHosts.minus(connectionMap.keys).forEach {
+            if (!running) {
+                return
+            }
+            logger.debug("adding new connection to $it with topic $topic")
+            val con = SubConnection(clientConfig, it, this).apply {
+                onMessage = { msg -> backoffHandler.handle(msg) }
+                onFailedMessage = { msg -> this@Subscription.onFailedMessage?.invoke(msg) }
+                onException = { e -> this@Subscription.onException?.invoke(e) }
+                onNSQError = { e -> this@Subscription.onNSQError?.invoke(e) }
+            }
             try {
-                logger.debug("adding new connection to $it with topic $topic")
-                val con = SubConnection(clientConfig, it, this).apply {
-                    onMessage = { msg -> backoffHandler.handle(msg) }
-                    onFailedMessage = { msg -> this@Subscription.onFailedMessage?.invoke(msg) }
-                    onException = { e -> this@Subscription.onException?.invoke(e) }
-                    onNSQError = { e -> this@Subscription.onNSQError?.invoke(e) }
-                }
                 con.connect()
                 connectionMap[it] = con
-            } catch (e: NSQException) {
-                throw e
             } catch (e: Exception) {
-                onException?.invoke(e)
-                logger.warn("error connecting to $it with topic $topic", e)
+                try {
+                    con.stop()
+                } catch (ignored: Exception) {
+                    // just ensure that the connection is shut down to not leak any resources!
+                }
+                if (e is NSQException) {
+                    throw e
+                }
+                if (running) {
+                    onException?.invoke(e)
+                    logger.warn("error connecting to $it with topic $topic", e)
+                }
             }
         }
         distributeMaxInFlight()
     }
 
     private fun distributeMaxInFlight() {
-        if (checkLowFlight() || connectionMap.isEmpty()) {
+        if (!running || checkLowFlight() || connectionMap.isEmpty()) {
             return
         }
         val oldestToBeActive = Instant.now().minus(subscriber.lookupInterval.multipliedBy(2))

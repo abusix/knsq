@@ -136,6 +136,7 @@ open class Subscriber private constructor(
         NSQLookupDHTTPClient(it, lookupInterval.dividedBy(2), lookupInterval.dividedBy(2))
     }
     private val subscriptions = mutableListOf<Subscription>()
+
     @Volatile
     private var running = false
 
@@ -238,14 +239,16 @@ open class Subscriber private constructor(
 
     @Synchronized
     private fun lookup() {
-        if (!running) {
-            return
-        }
         for (sub in subscriptions) {
+            if (!running) {
+                return
+            }
             try {
                 sub.updateConnections(lookupTopic(sub.topic))
             } catch (e: Exception) {
-                sub.onException?.invoke(e)
+                if (running) {
+                    sub.onException?.invoke(e)
+                }
                 logger.debug("Exception while looking up new nsqds for topic ${sub.topic}", e)
             }
         }

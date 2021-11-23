@@ -3,7 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.abusix/knsq)](https://repo1.maven.org/maven2/com/abusix/knsq/)
 [![GitHub issues](https://img.shields.io/github/issues/abusix/knsq)](https://github.com/abusix/knsq/issues)
 [![JDK Version](https://img.shields.io/badge/jdk-8-blue)](#)
-[![Kotlin Version](https://img.shields.io/badge/kotlin-1.5-blue)](#)
+[![Kotlin Version](https://img.shields.io/badge/kotlin-1.6-blue)](#)
 [![GitHub](https://img.shields.io/github/license/abusix/knsq)](#)
 
 A NSQ client library written in Kotlin, some parts based on [nsqj](https://github.com/sproutsocial/nsq-j).
@@ -29,7 +29,7 @@ Add the dependency using Maven
 <dependency>
     <groupId>com.abusix</groupId>
     <artifactId>knsq</artifactId>
-    <version>1.2.4</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ or Gradle
 
 ```
 dependencies {
-  compile 'com.abusix:knsq:1.2.4'
+  compile 'com.abusix:knsq:1.3.0'
 }
 ```
 

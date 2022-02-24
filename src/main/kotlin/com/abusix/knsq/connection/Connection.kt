@@ -38,11 +38,12 @@ import kotlin.math.min
 @Suppress("UnstableApiUsage")
 internal abstract class Connection(
     private val clientConfig: ClientConfig, val host: HostAndPort,
-    protected val executor: ScheduledExecutorService
+    protected val executor: ScheduledExecutorService,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(Connection::class.java)
         private val json = Json { encodeDefaults = true; ignoreUnknownKeys = true }
+        private const val HEARTBEAT = "_heartbeat_"
     }
 
     lateinit var output: DataOutputStream
@@ -86,7 +87,9 @@ internal abstract class Connection(
         writeCommand("IDENTIFY")
         writeData(json.encodeToString(clientConfig).toByteArray(Charsets.UTF_8))
         output.flush()
-        val response = readFrame()
+
+        // rarely, heartbeats are sent very soon
+        val response = readNonHeartbeatFrame()
         if (response !is Response) {
             throw KNSQException("Unexpected message type: ${response.type}")
         }
@@ -174,7 +177,7 @@ internal abstract class Connection(
             baseSocket, baseSocket.inetAddress.hostAddress, baseSocket.port, true
         )
         setStreams(sslSocket.getInputStream(), sslSocket.getOutputStream(), streamPair)
-        checkIsOK(readFrame())
+        checkIsOK(readNonHeartbeatFrame())
     }
 
     private fun wrapCompression(streamPair: StreamPair) {
@@ -186,13 +189,13 @@ internal abstract class Connection(
             )
             setStreams(inflateIn, deflateOut, streamPair)
             streamPair.isBuffered = true
-            checkIsOK(readFrame())
+            checkIsOK(readNonHeartbeatFrame())
         } else if (config.snappy) {
             logger.debug("adding snappy compression")
             val snappyIn = SnappyFramedInputStream(streamPair.input)
             val snappyOut = SnappyFramedOutputStream(streamPair.output)
             setStreams(snappyIn, snappyOut, streamPair)
-            checkIsOK(readFrame())
+            checkIsOK(readNonHeartbeatFrame())
         }
     }
 
@@ -204,7 +207,7 @@ internal abstract class Connection(
             writeCommand("AUTH")
             writeData(clientConfig.authSecret)
             output.flush()
-            val authResponse = readFrame()
+            val authResponse = readNonHeartbeatFrame()
             logger.debug("authorization response: {}", authResponse)
             if (authResponse is Error) {
                 throw NSQException(authResponse)
@@ -234,12 +237,22 @@ internal abstract class Connection(
         }
     }
 
+    private fun readNonHeartbeatFrame(): Frame {
+        while (true) {
+            val frame = readFrame()
+            if (frame is Response && frame.msg == HEARTBEAT) {
+                continue
+            }
+            return frame
+        }
+    }
+
     private fun read() {
         try {
             while (isRunning) {
                 //no need to synchronize, this is the only thread that reads after connect()
                 when (val frame = readFrame()) {
-                    is Response -> if (frame.msg == "_heartbeat_") {
+                    is Response -> if (frame.msg == HEARTBEAT) {
                         //don't block this thread
                         if (lastReceiveHeartbeatTask?.isDone != false) {
                             lastReceiveHeartbeatTask = executor.submit(::receivedHeartbeat)
@@ -316,6 +329,6 @@ internal abstract class Connection(
     private data class StreamPair(
         var input: InputStream,
         var output: OutputStream,
-        var isBuffered: Boolean = false
+        var isBuffered: Boolean = false,
     )
 }

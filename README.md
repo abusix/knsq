@@ -29,7 +29,7 @@ Add the dependency using Maven
 <dependency>
     <groupId>com.abusix</groupId>
     <artifactId>knsq</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ or Gradle
 
 ```
 dependencies {
-  compile 'com.abusix:knsq:1.3.0'
+  compile 'com.abusix:knsq:1.3.1'
 }
 ```
 

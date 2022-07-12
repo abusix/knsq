@@ -252,7 +252,7 @@ class Subscription internal constructor(
         try {
             running = false
             backoffHandler.stop()
-            synchronized(running) {
+            synchronized(backoffHandler) {
                 lowFlightRotateTask?.cancel(false)
                 lowFlightRotateTask = null
             }

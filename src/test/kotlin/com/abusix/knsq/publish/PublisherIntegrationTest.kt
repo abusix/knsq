@@ -20,8 +20,8 @@ import kotlin.test.*
 class PublisherIntegrationTest : IntegrationTestBase() {
     private val network = Network.newNetwork()!!
     private val nsqD: KGenericContainer = KGenericContainer(DockerImageName.parse("nsqio/nsq"))
-        .withCopyFileToContainer(MountableFile.forClasspathResource("cert.pem"), "/etc/ssl/certs/cert.pem")
-        .withCopyFileToContainer(MountableFile.forClasspathResource("key.pem"), "/etc/ssl/certs/key.pem")
+        .withCopyToContainer(MountableFile.forClasspathResource("cert.pem"), "/etc/ssl/certs/cert.pem")
+        .withCopyToContainer(MountableFile.forClasspathResource("key.pem"), "/etc/ssl/certs/key.pem")
         .withCommand("/nsqd --tls-cert=/etc/ssl/certs/cert.pem --tls-key=/etc/ssl/certs/key.pem")
         .withNetwork(network)
         .withNetworkAliases("nsqd")
@@ -58,7 +58,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
     @Test
     fun testPublish() {
         val sent = mutableSetOf<String>()
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150))
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150))
 
         generateMessages(200, delayChance = 0.1, maxDelay = 1000, onMessage = {
             if (it !in sent) {
@@ -78,7 +78,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
     @Test
     fun testPublishBuffered() {
         val sent = mutableSetOf<String>()
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150))
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150))
         pub.getBatcher("pubtest").maxSize = 501
 
         generateMessages(1000, delayChance = 0.015, maxDelay = 1200, onMessage = {
@@ -99,7 +99,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
     @Test
     fun testPublishDeferred() {
         val sent = mutableSetOf<String>()
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150))
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150))
 
         generateMessages(200, {
             if (it !in sent) {
@@ -119,7 +119,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
     @Test
     fun testPublishMultiple() {
         val sent = mutableSetOf<String>()
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150))
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150))
 
         generateMessages(100, { sent.add(it) })
         pub.publishMultiple("pubtest", sent.map { it.toByteArray() })
@@ -136,7 +136,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
     fun testSnappy() {
         val sent = mutableSetOf<String>()
         val clientConfig = ClientConfig(snappy = true)
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150), clientConfig)
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150), clientConfig)
         pub.getBatcher("pubtest").maxSize = 501
 
         generateMessages(1000, {
@@ -158,7 +158,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
     fun testDeflate() {
         val sent = mutableSetOf<String>()
         val clientConfig = ClientConfig(deflate = true)
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150), clientConfig)
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150), clientConfig)
         pub.getBatcher("pubtest").maxSize = 501
 
         generateMessages(1000, {
@@ -194,7 +194,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
 
         val sent = mutableSetOf<String>()
         val clientConfig = ClientConfig(tls = true, sslSocketFactory = ctx.socketFactory)
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150), clientConfig)
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150), clientConfig)
         pub.getBatcher("pubtest").maxSize = 501
 
         generateMessages(1000, {
@@ -214,7 +214,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
 
     @Test
     fun testDeadConnection() {
-        val pub = Publisher(nsqD.containerIpAddress + ":" + nsqD.getMappedPort(4150))
+        val pub = Publisher(nsqD.host + ":" + nsqD.getMappedPort(4150))
         generateMessages(10, { pub.publish("pubtest", it.toByteArray()) })
         nsqD.stop()
         assertFailsWith<Exception> { pub.publish("pubtest", "shouldFail".toByteArray()) }

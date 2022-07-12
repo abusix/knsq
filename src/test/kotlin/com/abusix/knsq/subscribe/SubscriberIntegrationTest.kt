@@ -40,7 +40,7 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
     private val hostsToReplace = mutableMapOf<String, HostAndPort>()
     private val subscriber by lazy {
         object : Subscriber(
-            nsqLookupD.containerIpAddress + ":" + nsqLookupD.getMappedPort(4161),
+            nsqLookupD.host + ":" + nsqLookupD.getMappedPort(4161),
             lookupInterval = Duration.ofSeconds(2)
         ) {
             override fun lookupTopic(topic: String, catchExceptions: Boolean): Set<HostAndPort> {
@@ -66,11 +66,11 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
         nsqD2.start()
 
         hostsToReplace[nsqD1.containerId.substring(0, 12)] = HostAndPort.fromParts(
-            nsqD1.containerIpAddress,
+            nsqD1.host,
             nsqD1.getMappedPort(4150)
         )
         hostsToReplace[nsqD2.containerId.substring(0, 12)] = HostAndPort.fromParts(
-            nsqD2.containerIpAddress,
+            nsqD2.host,
             nsqD2.getMappedPort(4150)
         )
     }
@@ -91,11 +91,11 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
 
         generateMessages(1, {
             sent.add(it)
-            postMessages("${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic, it)
+            postMessages("${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic, it)
         })
         generateMessages(1, {
             sent.add(it)
-            postMessages("${nsqD2.containerIpAddress}:${nsqD2.getMappedPort(4151)}", topic, it)
+            postMessages("${nsqD2.host}:${nsqD2.getMappedPort(4151)}", topic, it)
         })
         Thread.sleep(1000)
         subscriber.subscribe(topic, "chan", { received.add(it.data.decodeToString()) })
@@ -106,15 +106,15 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
         })
         val toSendList = toSend.toList()
         postMessages(
-            "${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic,
+            "${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic,
             *toSendList.subList(0, 50).toTypedArray()
         )
         postMessages(
-            "${nsqD2.containerIpAddress}:${nsqD2.getMappedPort(4151)}", topic,
+            "${nsqD2.host}:${nsqD2.getMappedPort(4151)}", topic,
             *toSendList.subList(50, 150).toTypedArray()
         )
         postMessages(
-            "${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic,
+            "${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic,
             *toSendList.subList(150, toSend.size).toTypedArray()
         )
 
@@ -135,11 +135,11 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
 
         generateMessages(1, {
             sent.add(it)
-            postMessages("${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic1, it)
+            postMessages("${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic1, it)
         })
         generateMessages(1, {
             sent.add(it)
-            postMessages("${nsqD2.containerIpAddress}:${nsqD2.getMappedPort(4151)}", topic1, it)
+            postMessages("${nsqD2.host}:${nsqD2.getMappedPort(4151)}", topic1, it)
         })
         Thread.sleep(1000)
         subscriber.subscribe(topic1, "chan", { received.add(it.data.decodeToString()) })
@@ -151,15 +151,15 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
         })
         val toSendList = toSend.toList()
         postMessages(
-            "${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic1,
+            "${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic1,
             *toSendList.subList(0, 50).toTypedArray()
         )
         postMessages(
-            "${nsqD2.containerIpAddress}:${nsqD2.getMappedPort(4151)}", topic1,
+            "${nsqD2.host}:${nsqD2.getMappedPort(4151)}", topic1,
             *toSendList.subList(50, 150).toTypedArray()
         )
         postMessages(
-            "${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic2,
+            "${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic2,
             *toSendList.subList(150, toSend.size).toTypedArray()
         )
 
@@ -179,7 +179,7 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
 
         generateMessages(1, {
             sent.add(it)
-            postMessages("${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic, it)
+            postMessages("${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic, it)
         })
         Thread.sleep(1000)
         subscriber.subscribe(topic, "chan", { received.add(it.data.decodeToString()) })
@@ -191,7 +191,7 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
         nsqD1.stop()
         nsqD1.start()
         hostsToReplace[nsqD1.containerId.substring(0, 12)] = HostAndPort.fromParts(
-            nsqD1.containerIpAddress,
+            nsqD1.host,
             nsqD1.getMappedPort(4150)
         )
 
@@ -200,7 +200,7 @@ class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
             toSend.add(it)
             sent.add(it)
         })
-        postMessages("${nsqD1.containerIpAddress}:${nsqD1.getMappedPort(4151)}", topic, *toSend.toTypedArray())
+        postMessages("${nsqD1.host}:${nsqD1.getMappedPort(4151)}", topic, *toSend.toTypedArray())
 
         while (received.size < sent.size) {
             Thread.sleep(100)

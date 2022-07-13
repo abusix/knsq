@@ -18,6 +18,7 @@ class BackoffHandlerTest {
     private var lastHandleTime: Instant = Instant.now()
     private val handleSucceedQueue = mutableListOf(true, false, false, false, true, true, true, true)
 
+    @Suppress("UNUSED_PARAMETER")
     @Synchronized
     private fun onMessage(msg: Message) {
         val now = Instant.now()

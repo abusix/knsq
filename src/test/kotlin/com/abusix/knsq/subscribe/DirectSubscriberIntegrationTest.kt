@@ -33,17 +33,17 @@ class DirectSubscriberIntegrationTest : SubscriberIntegrationTestBase() {
 
         generateMessages(1, {
             sent.add(it)
-            postMessages("${nsqD.containerIpAddress}:${nsqD.getMappedPort(4151)}", topic, it)
+            postMessages("${nsqD.host}:${nsqD.getMappedPort(4151)}", topic, it)
         })
         Thread.sleep(1000)
-        val subscriber = DirectSubscriber("${nsqD.containerIpAddress}:${nsqD.getMappedPort(4150)}")
+        val subscriber = DirectSubscriber("${nsqD.host}:${nsqD.getMappedPort(4150)}")
         subscriber.subscribe(topic, "chan", { received.add(it.data.decodeToString()) })
         val toSend = mutableSetOf<String>()
         generateMessages(300, {
             toSend.add(it)
             sent.add(it)
         })
-        postMessages("${nsqD.containerIpAddress}:${nsqD.getMappedPort(4151)}", topic, *toSend.toTypedArray())
+        postMessages("${nsqD.host}:${nsqD.getMappedPort(4151)}", topic, *toSend.toTypedArray())
 
         while (received.size < sent.size) {
             Thread.sleep(100)

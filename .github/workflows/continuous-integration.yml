@@ -27,6 +27,8 @@ jobs:
       docker:
         # Docker Hub image
         image: docker:dind
+        env: 
+          DOCKER_HOST: tcp://docker:2375/
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -40,11 +42,6 @@ jobs:
       - name: Run Gradle Test
         run: |
           gradle test
-        env: 
-          DOCKER_HOST: tcp://docker:2375/
-          DOCKER_VERSION: "20.10.17"
-          DOCKER_TLS_CERTDIR: ""
-          DOCKER_DRIVER: overlay2
 
       - name: Build Package
         if: ${{  github.ref }} ==  "refs/heads/release"

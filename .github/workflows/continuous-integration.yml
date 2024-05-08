@@ -9,16 +9,18 @@ on:
 name: Continuous Integration
 jobs:
 ####################################################################################
-#                 Test Knsq Build -- when commiting to any branch                  #
+#                 Test and Build Knsq-- when commiting to any branch               #
 ####################################################################################
-  test-knsq:
-    name: Test Knsq
+  build-knsq:
+    name: Build Knsq Package
     permissions:
       contents: read # This is required for actions/checkout
       pull-requests: write # This is required to write to the pull request
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
     container: gradle:jdk8
+    env:
+      DOCKER_VERSION: 26.1.1
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container

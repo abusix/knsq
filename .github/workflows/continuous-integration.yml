@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     container: gradle:7.4-jdk17
     env:
-      DOCKER_VERSION: 26.1.1
+      DOCKER_VERSION: 20.10.17
     # Service containers to run with `container-job`
     services:
       # Label used to access the service container
@@ -29,7 +29,7 @@ jobs:
         image: docker:dind
         # Provide the password for postgres
         env:
-          PDOCKER_HOST: tcp://docker:2375/
+          DOCKER_HOST: tcp://docker:2375/
           DOCKER_VERSION: "20.10.17"
           DOCKER_TLS_CERTDIR: ""
           DOCKER_DRIVER: overl      

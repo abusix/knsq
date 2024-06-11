@@ -5,10 +5,9 @@ import com.abusix.knsq.subscribe.Subscriber
 import com.google.common.net.HostAndPort
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
-import java.net.URL
+import java.net.URI
 import java.time.Duration
 
-@Suppress("UnstableApiUsage")
 abstract class AbstractHTTPClient(
     private val host: HostAndPort,
     private val tls: Boolean = false,
@@ -20,8 +19,8 @@ abstract class AbstractHTTPClient(
     }
 
     protected fun performGET(path: String): HttpURLConnection {
-        val urlString = "http${if (tls) "s" else ""}://$host/$path"
-        val con = URL(urlString).openConnection() as HttpURLConnection
+        val uri = URI("http${if (tls) "s" else ""}://$host/$path")
+        val con = uri.toURL().openConnection() as HttpURLConnection
         con.connectTimeout = connectTimeout.toMillis().toInt()
         con.readTimeout = readTimeout.toMillis().toInt()
 
@@ -32,8 +31,9 @@ abstract class AbstractHTTPClient(
     }
 
     protected fun performPOST(path: String, body: ByteArray = byteArrayOf()): HttpURLConnection {
-        val urlString = "http://$host/$path"
-        val con = URL(urlString).openConnection() as HttpURLConnection
+        //TODO use tls as well?
+        val uri = URI("http://$host/$path")
+        val con = uri.toURL().openConnection() as HttpURLConnection
         con.requestMethod = "POST"
         con.connectTimeout = connectTimeout.toMillis().toInt()
         con.readTimeout = readTimeout.toMillis().toInt()
@@ -49,7 +49,7 @@ abstract class AbstractHTTPClient(
     }
 
     /**
-     * Check whether or not the endpoint is available.
+     * Check whether the endpoint is available.
      */
     fun ping() = try {
         performGET("ping")

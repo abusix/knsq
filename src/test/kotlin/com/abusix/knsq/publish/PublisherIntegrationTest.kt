@@ -15,7 +15,6 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import kotlin.test.*
 
-@Suppress("UnstableApiUsage")
 @Timeout(30, unit = TimeUnit.SECONDS)
 class PublisherIntegrationTest : IntegrationTestBase() {
     private val network = Network.newNetwork()!!

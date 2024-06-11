@@ -15,7 +15,6 @@ import kotlin.math.max
  * An internal class used for connection management and its lifecycle when using a subscribing connection.
  * This class should not be used directly. Please use [com.abusix.knsq.subscribe.Subscriber] instead.
  */
-@Suppress("UnstableApiUsage")
 internal class SubConnection(clientConfig: ClientConfig, host: HostAndPort, private val subscription: Subscription) :
     Connection(clientConfig, host, subscription.scheduledExecutor) {
     companion object {

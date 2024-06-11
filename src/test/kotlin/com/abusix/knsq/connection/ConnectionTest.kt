@@ -27,7 +27,6 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlin.test.*
 
-@Suppress("UnstableApiUsage")
 class ConnectionTest {
     private val clientConfig = ClientConfig()
     private val connectionConfig = ConnectionConfig(

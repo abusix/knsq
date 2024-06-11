@@ -18,7 +18,6 @@ import java.time.Duration
  * @param connectTimeout The timeout for connection to the HTTP socket.
  * @param readTimeout The timeout for reading from the established socket.
  */
-@Suppress("UnstableApiUsage")
 class NSQDHTTPClient(
     nsqd: String,
     tls: Boolean = false,

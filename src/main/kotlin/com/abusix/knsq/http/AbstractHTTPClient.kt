@@ -31,8 +31,7 @@ abstract class AbstractHTTPClient(
     }
 
     protected fun performPOST(path: String, body: ByteArray = byteArrayOf()): HttpURLConnection {
-        //TODO use tls as well?
-        val uri = URI("http://$host/$path")
+        val uri = URI("http${if (tls) "s" else ""}://$host/$path")
         val con = uri.toURL().openConnection() as HttpURLConnection
         con.requestMethod = "POST"
         con.connectTimeout = connectTimeout.toMillis().toInt()

@@ -4,6 +4,7 @@
 - Upgraded Kotlin version to 1.9.20
 - Upgraded to target Java 11
 - Dependency upgrades
+- Fix AbstractHTTPClient.performPOST() not respecting TLS setting
 
 ## [1.4.0] - 12.07.2022
 - Upgraded Kotlin version to 1.7.10

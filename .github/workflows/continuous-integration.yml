@@ -41,7 +41,7 @@ jobs:
           
       - name: Run Gradle Test
         run: |
-          gradle test
+          gradle --info --stacktrace test
 
       - name: Build Package
         if: ${{  github.ref }} ==  "refs/heads/release"

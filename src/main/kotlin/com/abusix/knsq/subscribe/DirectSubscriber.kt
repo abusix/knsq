@@ -17,7 +17,6 @@ import java.util.concurrent.ScheduledExecutorService
  * Keep in mind that instances of this class must be cleaned up using the [stop] method. Not doing so might result
  * in memory leaks and non-terminating threads.
  */
-@Suppress("UnstableApiUsage")
 class DirectSubscriber : Subscriber {
     /**
      * Create a new DirectSubscriber. Use this constructor if you want to use the embedded thread pools for handling

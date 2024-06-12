@@ -1,13 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 tasks.withType(KotlinCompile::class) {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10"
-    kotlin("plugin.serialization") version "1.7.10"
-    id("org.jetbrains.dokka") version "1.7.0"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
+    id("org.jetbrains.dokka") version "1.9.20"
     java
     id("org.gradle.test-retry") version "1.4.0"
     id("com.github.ben-manes.versions") version "0.42.0"
@@ -23,24 +28,24 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    implementation("com.google.guava:guava:31.1-jre")
-    implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
-    implementation("org.xerial.snappy:snappy-java:1.1.8.4")
+    implementation("com.google.guava:guava:33.2.1-jre")
+    implementation("org.slf4j:slf4j-api:2.0.13")
+    implementation("org.xerial.snappy:snappy-java:1.1.10.4")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
     testImplementation(kotlin("reflect"))
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk:1.13.11")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    testImplementation("org.testcontainers:testcontainers:1.17.3")
-    testImplementation("com.github.tomakehurst:wiremock-jre8:2.33.2")
-    testImplementation("ch.qos.logback:logback-core:1.3.0-alpha14")
-    testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha16")
-    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.0")
+    testImplementation("org.testcontainers:testcontainers:1.19.8")
+    testImplementation("com.github.tomakehurst:wiremock:3.0.1")
+    testImplementation("ch.qos.logback:logback-core:1.4.14")
+    testImplementation("ch.qos.logback:logback-classic:1.4.12")
+    dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.20")
 }
 
 tasks.processResources {
@@ -50,6 +55,9 @@ tasks.processResources {
 }
 
 tasks.withType<Test> {
+    jvmArgs(
+        "--add-opens", "java.base/java.io=ALL-UNNAMED"
+    )
     useJUnitPlatform { }
     retry {
         failOnPassedAfterRetry.set(false)
@@ -63,7 +71,7 @@ tasks.register<Jar>("dokkaJavadocJar") {
     description = "Assembles a jar archive containing Javadoc documentation."
     dependsOn("dokkaJavadoc")
     archiveClassifier.set("javadoc")
-    from("$buildDir/dokka/javadoc")
+    from("${layout.buildDirectory}/dokka/javadoc")
 }
 
 tasks.register<Jar>("sourcesJar") {

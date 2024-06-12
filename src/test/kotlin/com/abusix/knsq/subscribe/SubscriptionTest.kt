@@ -22,7 +22,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
-@Suppress("UnstableApiUsage")
 class SubscriptionTest {
     @AfterTest
     fun cleanup() {

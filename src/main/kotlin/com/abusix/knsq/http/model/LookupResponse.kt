@@ -25,7 +25,6 @@ data class LookupResponse(
 /**
  * A data class that represents a single nsqd producer node returned by nsqlookupd.
  */
-@Suppress("UnstableApiUsage")
 @Serializable
 data class NsqD(
     /**

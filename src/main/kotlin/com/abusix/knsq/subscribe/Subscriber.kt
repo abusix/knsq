@@ -23,7 +23,6 @@ import java.util.concurrent.*
  * Keep in mind that instances of this class must be cleaned up using the [stop] method. Not doing so might result
  * in memory leaks and non-terminating threads.
  */
-@Suppress("UnstableApiUsage")
 open class Subscriber private constructor(
     private val clientConfig: ClientConfig,
     val lookupInterval: Duration,

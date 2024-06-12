@@ -81,11 +81,6 @@ tasks.register<Jar>("sourcesJar") {
     from("src/main/kotlin")
 }
 
-tasks.withType<Test>().all {
-    // uncomment when you build this with Java 17 or newer
-    // jvmArgs("--add-opens=java.base/java.io=ALL-UNNAMED")
-}
-
 publishing {
     publications {
         create<MavenPublication>("maven") {

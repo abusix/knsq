@@ -18,7 +18,7 @@ jobs:
       pull-requests: write # This is required to write to the pull request
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
-    container: gradle:7.4-jdk17
+    container: gradle:8-jdk17
     env:
       DOCKER_VERSION: 20.10.17
     # Service containers to run with `container-job`

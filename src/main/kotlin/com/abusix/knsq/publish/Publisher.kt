@@ -22,7 +22,6 @@ import java.util.concurrent.ScheduledExecutorService
  * Keep in mind that instances of this class must be cleaned up using the [stop] method. Not doing so might result
  * in memory leaks and non-terminating threads.
  */
-@Suppress("UnstableApiUsage")
 class Publisher private constructor(
     nsqd: String,
     private val clientConfig: ClientConfig,

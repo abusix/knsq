@@ -55,7 +55,7 @@ class Batcher internal constructor(
      * The method also schedules send tasks if necessary.
      */
     internal fun publish(msg: ByteArray) = synchronized(batchDeque) {
-        if (batchDeque.isEmpty() || !batchDeque.last.append(msg)) {
+        if (batchDeque.isEmpty() || !batchDeque.last().append(msg)) {
             batchDeque.add(Batch(msg))
             if (batchDeque.size == 1) {
                 // We just initialized the first batch. We start a delayed task at the target send time.

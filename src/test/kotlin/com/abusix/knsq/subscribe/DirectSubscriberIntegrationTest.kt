@@ -3,6 +3,7 @@ package com.abusix.knsq.subscribe
 import com.abusix.knsq.util.KGenericContainer
 import org.junit.jupiter.api.Timeout
 import org.testcontainers.utility.DockerImageName
+import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -27,8 +28,8 @@ class DirectSubscriberIntegrationTest : SubscriberIntegrationTestBase() {
 
     @Test
     fun testSubscribe() {
-        val sent = mutableSetOf<String>()
-        val received = mutableSetOf<String>()
+        val sent = Collections.synchronizedSet(mutableSetOf<String>())
+        val received = Collections.synchronizedSet(mutableSetOf<String>())
         val topic = "subtest#ephemeral"
 
         generateMessages(1, {

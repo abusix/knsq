@@ -20,7 +20,6 @@ import java.time.Duration
  * @param connectTimeout The timeout for connection to the HTTP socket.
  * @param readTimeout The timeout for reading from the established socket.
  */
-@Suppress("UnstableApiUsage")
 class NSQLookupDHTTPClient(
     lookupd: String,
     connectTimeout: Duration = DEFAULT_LOOKUP_INTERVAL.dividedBy(2),

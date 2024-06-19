@@ -11,7 +11,6 @@ import java.util.concurrent.ScheduledExecutorService
  * An internal class used for connection management and its lifecycle when using a publishing connection.
  * This class should not be used directly. Please use [com.abusix.knsq.publish.Publisher] instead.
  */
-@Suppress("UnstableApiUsage")
 internal class PubConnection(clientConfig: ClientConfig, host: HostAndPort, executor: ScheduledExecutorService) :
     Connection(clientConfig, host, executor) {
     @Synchronized

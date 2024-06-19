@@ -1,0 +1,58 @@
+########################################################################################################################################################################################
+# Run Tests and Run Docker Build for any commit 
+########################################################################################################################################################################################
+on:
+  push:
+    branches:
+      - '*'
+
+name: Continuous Integration
+jobs:
+####################################################################################
+#                 Test and Build Knsq-- when commiting to any branch               #
+####################################################################################
+  build-knsq:
+    name: Build Knsq Package
+    permissions:
+      contents: read # This is required for actions/checkout
+      pull-requests: write # This is required to write to the pull request
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    container: gradle:8-jdk17
+    env:
+      DOCKER_VERSION: 20.10.17
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      docker:
+        # Docker Hub image
+        image: docker:dind
+        env: 
+          DOCKER_HOST: tcp://docker:2375/
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz
+          tar xzvf docker-$DOCKER_VERSION.tgz --strip 1 -C /usr/local/bin docker/docker
+          docker pull nsqio/nsq
+          
+      - name: Run Gradle Test
+        run: |
+          gradle --stacktrace test
+
+      - name: Build Package
+        if: github.ref == 'refs/heads/release'
+        run: |
+          gradle dokkaHtml dokkaJavadoc
+          mkdir public && mv build/dokka public
+
+      - name: Upload Package
+        if: github.ref == 'refs/heads/release'
+        uses: actions/upload-artifact@v2
+        with:
+          name: public
+          path: public
+  

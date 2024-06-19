@@ -10,12 +10,12 @@ import org.testcontainers.utility.DockerImageName
 import org.testcontainers.utility.MountableFile
 import java.security.KeyStore
 import java.time.Duration
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import kotlin.test.*
 
-@Suppress("UnstableApiUsage")
 @Timeout(30, unit = TimeUnit.SECONDS)
 class PublisherIntegrationTest : IntegrationTestBase() {
     private val network = Network.newNetwork()!!
@@ -32,7 +32,7 @@ class PublisherIntegrationTest : IntegrationTestBase() {
                     "-nsqd-tcp-address=nsqd:4150"
         )
         .withNetwork(network)
-    private val received = mutableSetOf<String>()
+    private val received = Collections.synchronizedSet(mutableSetOf<String>())
     private var buffer = byteArrayOf()
 
     @BeforeTest

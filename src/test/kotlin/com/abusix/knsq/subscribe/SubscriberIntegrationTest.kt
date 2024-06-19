@@ -17,7 +17,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Suppress("UnstableApiUsage")
 @Timeout(60, unit = TimeUnit.SECONDS)
 class SubscriberIntegrationTest : SubscriberIntegrationTestBase() {
     private val network = Network.newNetwork()

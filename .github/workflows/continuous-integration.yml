@@ -42,17 +42,3 @@ jobs:
       - name: Run Gradle Test
         run: |
           gradle --stacktrace test
-
-      - name: Build Package
-        if: github.ref == 'refs/heads/release'
-        run: |
-          gradle dokkaHtml dokkaJavadoc
-          mkdir public && mv build/dokka public
-
-      - name: Upload Package
-        if: github.ref == 'refs/heads/release'
-        uses: actions/upload-artifact@v2
-        with:
-          name: public
-          path: public
-  

@@ -139,8 +139,8 @@ below.
 
 ## Further Documentation
 
-* Dokka: https://abusix.gitlab.io/ai/evprocessing/knsq/dokka/html
-* JavaDoc: https://abusix.gitlab.io/ai/evprocessing/knsq/dokka/javadoc
+* Dokka: https://abusix.github.io/knsq/html
+* JavaDoc: https://abusix.github.io/knsq/javadoc
 
 ## License
 

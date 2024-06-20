@@ -23,10 +23,6 @@ release:
 	git commit -m "Update for next development version [skip ci]"; \
 	git push origin master; \
 	git push origin release_$$VERSION \
-		-o merge_request.create \
-		-o merge_request.target=release \
-		-o merge_request.remove_source_branch \
-		-o merge_request.title="Merge release version $$VERSION"; \
 	git push --tags; \
 	git branch -d release_$$VERSION
 

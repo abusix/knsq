@@ -1,3 +1,6 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 tasks.withType(KotlinCompile::class) {
@@ -16,7 +19,7 @@ plugins {
     java
     id("org.gradle.test-retry") version "1.4.0"
     id("com.github.ben-manes.versions") version "0.42.0"
-    `maven-publish`
+    id("com.vanniktech.maven.publish") version "0.28.0"
     signing
 }
 
@@ -66,77 +69,48 @@ tasks.withType<Test> {
     }
 }
 
-tasks.register<Jar>("dokkaJavadocJar") {
-    group = "Build"
-    description = "Assembles a jar archive containing Javadoc documentation."
-    dependsOn("dokkaJavadoc")
-    archiveClassifier.set("javadoc")
-    from("${layout.buildDirectory}/dokka/javadoc")
-}
+mavenPublishing {
+    configure(
+        KotlinJvm(
+            javadocJar = JavadocJar.Dokka("dokkaJavadoc"), // publish normal javadoc, use dokkaHtml for Dokka style
+            sourcesJar = true,
+        )
+    )
 
-tasks.register<Jar>("sourcesJar") {
-    group = "Build"
-    description = "Assembles a jar archive containing the main source code."
-    archiveClassifier.set("sources")
-    from("src/main/kotlin")
-}
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.abusix"
-            artifactId = "knsq"
-            from(components["java"])
+    coordinates("com.abusix", "knsq", file("VERSION").readText().trim())
+    pom {
+        name.set("com.abusix:knsq")
+        description.set("A NSQ client library written in Kotlin, based on nsq-j")
+        url.set("https://github.com/abusix/knsq")
 
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["dokkaJavadocJar"])
-
-            pom {
-                name.set("com.abusix:knsq")
-                description.set("A NSQ client library written in Kotlin, based on nsq-j")
-                url.set("https://github.com/abusix/knsq")
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("http://www.opensource.org/licenses/mit-license.php")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("bgeisberger")
-                        name.set("Bernhard Geisberger")
-                        email.set("bernhard.geisberger@abusix.com")
-                        organization.set("Abusix")
-                        organizationUrl.set("https://www.abusix.com/")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:git://github.com/abusix/knsq.git")
-                    developerConnection.set("scm:git:ssh://github.com:abusix/knsq.git")
-                    url.set("https://github.com/abusix/knsq/tree/master")
-                }
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("http://www.opensource.org/licenses/mit-license.php")
             }
         }
-    }
-    repositories {
-        maven {
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            if (project.hasProperty("ossrhUsername") && project.hasProperty("ossrhPassword")) {
-                credentials {
-                    username = project.properties["ossrhUsername"].toString()
-                    password = project.properties["ossrhPassword"].toString()
-                }
+        developers {
+            developer {
+                id.set("bgeisberger")
+                name.set("Bernhard Geisberger")
+                email.set("bernhard.geisberger@abusix.com")
+                organization.set("Abusix")
+                organizationUrl.set("https://www.abusix.com/")
+            }
+            developer {
+                name.set("Christian Wahl")
+                email.set("christian.wahl@abusix.com")
+                organization.set("Abusix")
+                organizationUrl.set("https://www.abusix.com/")
             }
         }
-    }
-}
-
-signing {
-    if (project.hasProperty("signing.keyId")
-        && project.hasProperty("signing.password")
-        && project.hasProperty("signing.secretKeyRingFile")
-    ) {
-        sign(publishing.publications["maven"])
+        scm {
+            connection.set("scm:git:git://github.com/abusix/knsq.git")
+            developerConnection.set("scm:git:ssh://github.com:abusix/knsq.git")
+            url.set("https://github.com/abusix/knsq/tree/master")
+        }
     }
 }

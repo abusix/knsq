@@ -19,7 +19,6 @@ import kotlin.math.min
  * A class that represents a subscription for a specific topic and channel to multiple nsqd instances. You can
  * use this class to configure the specific behaviour of the subscription.
  */
-@Suppress("UnstableApiUsage")
 class Subscription internal constructor(
     private val clientConfig: ClientConfig, val topic: String, val channel: String,
     private val subscriber: Subscriber, autoFinish: Boolean

@@ -15,7 +15,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-@Suppress("UnstableApiUsage")
 class PubConnectionTest {
     private val clientConfig = ClientConfig()
     private val connectionConfig = ConnectionConfig(

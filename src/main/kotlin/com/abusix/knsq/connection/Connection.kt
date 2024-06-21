@@ -35,7 +35,6 @@ import kotlin.math.min
  * An internal class used for generic connection management and its lifecycle. This class should not be used directly.
  * Please use [com.abusix.knsq.publish.Publisher] or [com.abusix.knsq.subscribe.Subscriber] instead.
  */
-@Suppress("UnstableApiUsage")
 internal abstract class Connection(
     private val clientConfig: ClientConfig, val host: HostAndPort,
     protected val executor: ScheduledExecutorService,
@@ -233,6 +232,7 @@ internal abstract class Connection(
                 input.readLong(), input.readUnsignedShort(),
                 input.readAscii(16), input.readBytes(size - 30), this
             )
+
             else -> throw KNSQException("unexpected frame type:$ft")
         }
     }
@@ -260,6 +260,7 @@ internal abstract class Connection(
                     } else {
                         responseQueue.offer(frame)
                     }
+
                     is Error -> {
                         responseQueue.offer(frame)
                         onNSQError?.invoke(frame)
@@ -267,6 +268,7 @@ internal abstract class Connection(
                             break
                         }
                     }
+
                     is Message -> onIncomingMessage(frame)
                 }
             }

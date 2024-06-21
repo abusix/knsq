@@ -19,10 +19,10 @@ class BatcherTest {
         val executor = Executors.newSingleThreadScheduledExecutor()
         val batcher = Batcher(pub, executor, "TOPIC", maxSize = 50, maxDelay = Duration.ofDays(1000))
         batcher.publish(msg1)
-        Thread.sleep(1)
+        Thread.sleep(10)
         confirmVerified(pub)
         batcher.publish(msg2)
-        Thread.sleep(1)
+        Thread.sleep(10)
         verify(exactly = 1) { pub.publishMultiple("TOPIC", any()) }
         confirmVerified(pub)
         executor.shutdownNow()

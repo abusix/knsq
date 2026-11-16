@@ -35,7 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     implementation("com.google.guava:guava:33.2.1-jre")
-    implementation("org.slf4j:slf4j-api:2.0.13")
+    implementation("org.slf4j:slf4j-api:2.0.20")
     implementation("org.xerial.snappy:snappy-java:1.1.10.4")
 
     testImplementation(kotlin("test"))

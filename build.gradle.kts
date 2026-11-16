@@ -36,7 +36,7 @@ dependencies {
 
     implementation("com.google.guava:guava:33.2.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.13")
-    implementation("org.xerial.snappy:snappy-java:1.1.10.4")
+    implementation("org.xerial.snappy:snappy-java:1.1.10.12")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))

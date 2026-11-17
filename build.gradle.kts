@@ -14,7 +14,7 @@ java {
 
 plugins {
     kotlin("jvm") version "1.9.20"
-    kotlin("plugin.serialization") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.25"
     id("org.jetbrains.dokka") version "1.9.20"
     java
     id("org.gradle.test-retry") version "1.4.0"

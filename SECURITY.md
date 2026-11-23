@@ -4,7 +4,7 @@
 
 Email <security@abusix.com>. Please report privately and do not open a public issue or pull
 request. The policy for reports is at
-<https://abusix.com/security#reporting-a-vulnerability>.
+<https://abusix.com/security/#elementor-toc__heading-anchor-10>.
 
 ## Supported versions
 

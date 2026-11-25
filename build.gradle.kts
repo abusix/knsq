@@ -32,7 +32,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.13.0")
 
     implementation("com.google.guava:guava:33.2.1-jre")
     implementation("org.slf4j:slf4j-api:2.0.13")

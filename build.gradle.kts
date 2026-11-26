@@ -45,7 +45,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
     testImplementation("org.testcontainers:testcontainers:1.19.8")
-    testImplementation("org.wiremock:wiremock:3.0.3")
+    testImplementation("org.wiremock:wiremock:3.13.2")
     testImplementation("ch.qos.logback:logback-core:1.4.14")
     testImplementation("ch.qos.logback:logback-classic:1.4.12")
     dokkaJavadocPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.20")
